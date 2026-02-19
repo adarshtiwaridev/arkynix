@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* =====================================================
+   1. DESIGN TOKENS (LIGHT THEME DEFAULT)
+   ===================================================== */
+
+:root {
+  --radius: 0.75rem;
+
+  /* Core Colors */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0 0);
+
+  --card: oklch(0.98 0 0);
+  --accent: oklch(0.6 0.25 25);
+  --border: oklch(0 0 0 / 10%);
+  --ring: var(--accent);
+}
+
+/* =====================================================
+   2. DARK THEME OVERRIDES
+   ===================================================== */
+
+html.dark {
+  --background: oklch(0.1 0 0);
+  --foreground: oklch(0.98 0 0);
+
+  --card: oklch(0.15 0 0);
+  --accent: oklch(0.65 0.25 25);
+  --border: oklch(1 0 0 / 10%);
+}
+
+/* =====================================================
+   3. TAILWIND v4 THEME BRIDGE
+   ===================================================== */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+/* =====================================================
+   4. BASE GLOBAL STYLES
+   ===================================================== */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    transition:
+      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.4s ease;
+  }
+
+  /* Headings cleaner look */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-foreground font-semibold;
+  }
+
+  p {
+    @apply text-foreground/80;
+  }
+}
+
+/* =====================================================
+   5. OPTIONAL UTILITIES
+   ===================================================== */
+
+/* Glass effect */
+.glass {
+  @apply bg-background/70 backdrop-blur-xl border border-border shadow-xl;
+}
+
+/* Card surface */
+.card {
+  @apply bg-card border border-border rounded-[var(--radius)] shadow-sm;
+}
+
+/* Accent button */
+.btn-accent {
+  @apply bg-accent text-white rounded-[var(--radius)] px-6 py-2 font-semibold transition hover:opacity-90;
+}
+
+/* Text outline utility */
+.text-outline {
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+}

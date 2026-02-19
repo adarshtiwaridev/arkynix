@@ -1,4 +1,6 @@
 import "./globals.css";
+import Navbar from "../components/common/Navbar";
+import Footer from "../components/common/Footer";
 
 export const metadata = {
   title: "Software Agency",
@@ -7,12 +9,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col">
-        {/* <Navbar /> */}
-       {/* <Toaster richColors position="top-right" toastOptions={{ duration:3000 }} /> */}
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+        <Navbar />
         <main className="flex-1">{children}</main>
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );
