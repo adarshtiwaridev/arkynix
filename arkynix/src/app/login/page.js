@@ -2,21 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
-import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,135 +17,107 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-
-    try {
-      const res = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login failed");
-   if (data.token) {
-    localStorage.setItem("auth_token", data.token);
-    console.log("token saved ")
-   }
-   else {    console.log("No token received");
-   }
-      toast.success("Welcome back 🚀");
-      router.push("/dashboard");
-    } catch (err) {
-      setError(err.message);
-    } finally {
+    
+    // Simulate API Call
+    setTimeout(() => {
+      toast.success("Access Granted 🚀");
       setLoading(false);
-    }
+      router.push("/dashboard");
+    }, 1500);
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center transition-colors duration-500 bg-slate-50 dark:bg-[#0a0a0a] px-4 overflow-hidden relative">
+      
+      {/* 🌌 Background Accents (Visible in both themes) */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 dark:bg-blue-600/20 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 dark:bg-purple-600/20 rounded-full blur-[120px] animate-pulse delay-700" />
 
-      {/* 🔮 Gradient Glow Background */}
-      <div className="absolute -top-40 -left-40 h-96 w-96 bg-blue-600/30 blur-3xl rounded-full" />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 bg-purple-600/30 blur-3xl rounded-full" />
-
-      {/* 🧊 Glass Card */}
-      <div className="relative hover:border-b-amber-400 z-10 grid w-full max-w-5xl grid-cols-1 md:grid-cols-2 rounded-3xl overflow-hidden border border-border bg-card/70 backdrop-blur-xl shadow-2xl">
-
-        {/* 🖼️ Left Image Section */}
-        <div className="relative hidden md:block">
-          <Image
-            src="/photos/image02.avif" // replace with your image
-            alt="Login Visual"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/50" />
-
-          <div className="absolute bottom-10 left-10 right-10 text-white">
-            <h2 className="text-3xl font-extrabold leading-tight">
-              Build. Manage. Scale.
-            </h2>
-            <p className="mt-2 text-sm text-white/80">
-              Access your dashboard and control everything from one place.
+      {/* 📦 The Login Box */}
+      <div className="w-full max-w-md z-10 animate-in fade-in zoom-in duration-700">
+        <div className="bg-white/80 dark:bg-white/[0.03] backdrop-blur-2xl border border-slate-200 dark:border-white/10 p-8 rounded-[2rem] shadow-xl dark:shadow-2xl">
+          
+          {/* Header */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-black mb-4 shadow-lg">
+              <ShieldCheck size={28} />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              Admin Login
+            </h1>
+            <p className="text-slate-500 dark:text-gray-400 text-sm mt-2 font-medium">
+              Please enter your details to proceed
             </p>
           </div>
-        </div>
 
-        {/* 🔐 Right Login Form */}
-        <div className="p-8 sm:p-12">
-          {/* Logo */}
-          <div className="mb-6">
-            <div className="h-12 w-12 rounded-xl bg-accent text-white flex items-center justify-center font-black text-lg">
-              AK
-            </div>
-          </div>
-
-          <h1 className="text-3xl font-extrabold text-foreground">
-            Welcome back Admin!
-          </h1>
-          <p className="mt-1 text-sm text-foreground/70">
-            Only Admin Login to continue
-          </p>
-
-          {error && (
-            <p className="mt-4 text-sm text-red-500">{error}</p>
-          )}
-
-          <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-            {/* Email */}
-            <div>
-              <label className="text-sm font-medium text-foreground/80">
-                Email
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email Field */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest ml-1">
+                Email Address
               </label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 w-full rounded-xl px-4 py-3 bg-background border border-border focus:ring-2 focus:ring-accent outline-none transition"
-              />
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="name@company.com"
+                  onChange={handleChange}
+                  className="w-full bg-slate-100 dark:bg-white/[0.05] border border-transparent focus:border-blue-500/50 dark:focus:border-blue-400/50 rounded-2xl py-3.5 pl-12 pr-4 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-600 outline-none focus:ring-4 focus:ring-blue-500/5 dark:focus:ring-blue-400/10 transition-all"
+                />
+              </div>
             </div>
 
-            {/* Password */}
-            <div>
-              <label className="text-sm font-medium text-foreground/80">
-                Password
+            {/* Password Field */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest ml-1">
+                Secure Password
               </label>
-              <div className="relative mt-1">
+              <div className="relative group">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   required
-                  value={formData.password}
+                  placeholder="••••••••"
                   onChange={handleChange}
-                  className="w-full rounded-xl px-4 py-3 pr-12 bg-background border border-border focus:ring-2 focus:ring-accent outline-none transition"
+                  className="w-full bg-slate-100 dark:bg-white/[0.05] border border-transparent focus:border-blue-500/50 dark:focus:border-blue-400/50 rounded-2xl py-3.5 pl-12 pr-12 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-600 outline-none focus:ring-4 focus:ring-blue-500/5 dark:focus:ring-blue-400/10 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/60"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl py-3 bg-accent text-white font-semibold hover:opacity-90 transition flex items-center justify-center gap-2"
+              className="w-full bg-slate-900 dark:bg-white text-white dark:text-black font-bold py-4 rounded-2xl shadow-lg hover:opacity-90 transition-all active:scale-[0.97] disabled:opacity-50 flex items-center justify-center gap-3 mt-4"
             >
-              {loading && <Loader2 size={18} className="animate-spin" />}
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
+
+          {/* Bottom Security Badge */}
+          <div className="mt-8 flex items-center justify-center gap-2 opacity-50 dark:opacity-30">
+            <div className="h-[1px] w-8 bg-slate-400" />
+            <span className="text-[10px] font-bold text-slate-500 dark:text-gray-400 uppercase tracking-tighter">
+              Secure Session
+            </span>
+            <div className="h-[1px] w-8 bg-slate-400" />
+          </div>
         </div>
       </div>
     </div>
   );
-}
+} 
