@@ -93,7 +93,7 @@ const TeamPage = () => {
 
       {/* SECTION: FOOTER CTA */}
       <footer className="max-w-7xl mx-auto px-6 py-20 border-t border-border mt-20 text-center">
-        <h2 className="text-2xl font-bold mb-4">Want to join us?</h2>
+        <h2 className="text-2xl font-bold mb-4">Want to join us connect us ?</h2>
         <p className="text-foreground/60 mb-8">We're always looking for talented developers and designers.</p>
         <button className="bg-foreground text-background px-8 py-3 rounded-md font-bold hover:opacity-90 transition-opacity">
           View Careers
