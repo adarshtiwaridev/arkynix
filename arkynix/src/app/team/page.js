@@ -61,7 +61,7 @@ const TeamPage = () => {
                 <p className="text-foreground/70 text-sm leading-relaxed mb-6">
                   {member.bio}
                 </p>
-                <div className="flex gap-4 mt-auto">
+                <div className="flex gap-4 mt-auto">o0
                   <a href="#" className="text-foreground/40 hover:text-accent transition-colors"><Linkedin size={18} /></a>
                   <a href="#" className="text-foreground/40 hover:text-accent transition-colors"><Mail size={18} /></a>
                 </div>
