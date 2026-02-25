@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { Linkedin, Github, Mail, Globe } from 'lucide-react';
 
@@ -7,13 +8,15 @@ const TeamPage = () => {
       name: "Rohil M Roshan",
       role: "Founder & CEO",
       bio: "Rohil leads the strategic vision at Arkynix. With over 1 years in systems architecture, he focuses on building scalable digital infrastructure for global enterprises.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&h=300&auto=format&fit=crop"
+      image: "/images/rohil.png",
     },
     {
       name: "Adarsh Tiwari",
       role: "Co-Founder & CTO",
       bio: "Adarsh oversees daily operations and growth. He specialized in scaling technical teams and streamlining internal workflows to ensure peak efficiency.",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&h=300&auto=format&fit=crop"
+      image: "/images/best-profile.jpg",
+      linkedin:"https://www.linkedin.com/in/adarshtiwaridev",
+      email: "adarshtiwaridev01@gmail.com",
     },
     {
       name: "Prashant Shukla",
@@ -61,9 +64,9 @@ const TeamPage = () => {
                 <p className="text-foreground/70 text-sm leading-relaxed mb-6">
                   {member.bio}
                 </p>
-                <div className="flex gap-4 mt-auto">o0
-                  <a href="#" className="text-foreground/40 hover:text-accent transition-colors"><Linkedin size={18} /></a>
-                  <a href="#" className="text-foreground/40 hover:text-accent transition-colors"><Mail size={18} /></a>
+                <div className="flex gap-4 mt-auto">
+                  <a href={member.linkedin} className="text-foreground/40 hover:text-accent transition-colors"><Linkedin size={18} /></a>
+                  <a href={`mailto:${member.email}`} className="text-foreground/40 hover:text-accent transition-colors"><Mail size={18} /></a>
                 </div>
               </div>
             ))}

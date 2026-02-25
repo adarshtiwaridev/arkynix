@@ -13,6 +13,10 @@ import {
   CheckCircle,
   AlertCircle,
   ChevronDown,
+  User,
+  MessageSquare,
+  Sparkles,
+  Calendar
 } from "lucide-react";
 
 /* ================= VALIDATION ================= */
@@ -34,6 +38,7 @@ const services = [
       { label: "AI Automation Agent", value: "ai-agent" },
       { label: "AI Chat Agent", value: "chat-agent" },
       { label: "AI Voice Agent", value: "voice-agent" },
+      { label: "Custom AI Model", value: "custom-ai" },
     ],
   },
   {
@@ -42,10 +47,11 @@ const services = [
       { label: "Portfolio Website", value: "portfolio" },
       { label: "Business Website", value: "business" },
       { label: "E-Commerce Platform", value: "ecommerce" },
+      { label: "SaaS Application", value: "saas" },
     ],
   },
   {
-    category: "App Development",
+    category: "Mobile Development",
     options: [
       { label: "Android Application", value: "android" },
       { label: "iOS Application", value: "ios" },
@@ -53,10 +59,10 @@ const services = [
     ],
   },
   {
-    category: "Software Architecture",
+    category: "Cloud & DevOps",
     options: [
-      { label: "System Design", value: "system-design" },
       { label: "Cloud Infrastructure", value: "cloud" },
+      { label: "System Design", value: "system-design" },
       { label: "DevOps Setup", value: "devops" },
     ],
   },
@@ -64,8 +70,9 @@ const services = [
 
 /* ================= MAIN COMPONENT ================= */
 
-export default function ContactValidated() {
+export default function BookingPage() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const {
     register,
@@ -78,122 +85,286 @@ export default function ContactValidated() {
   });
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log(data);
-    const contact = await fetch("/api/booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fullName: data.fullName,
-        email: data.email,
-        mobile: data.mobile,
-        service: data.service,
-        message: data.message,
-      }),
-    });
-    
-    setIsSuccess(true);
+    try {
+      setError(null);
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          email: data.email,
+          mobile: data.mobile,
+          service: data.service,
+          message: data.message,
+        }),
+      });
 
-    setTimeout(() => {
-      setIsSuccess(false);
-      reset();
-    }, 4000);
+      if (!response.ok) throw new Error("Failed to submit booking");
+      
+      setIsSuccess(true);
+
+      setTimeout(() => {
+        setIsSuccess(false);
+        reset();
+      }, 5000);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    }
   };
 
   return (
-    <section className="bg-background text-foreground py-20 px-5 md:px-10">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-start">
-
-        {/* LEFT SIDE */}
-        <div className="space-y-8">
-          <div>
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight">
-              Get in <span className="text-red-600">Touch</span>
+    <main className="min-h-screen bg-background text-foreground">
+      
+      {/* HERO SECTION */}
+      <section className="relative pt-32 pb-16 px-6 border-b border-border">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-semibold mb-6">
+              <Calendar className="w-4 h-4" />
+              <span>Book a Consultation</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-6">
+              Let's Build Something
+              <br />
+              <span className="gradient-text">Amazing Together</span>
             </h1>
-            <p className="text-sm md:text-base text-foreground/60 mt-3 max-w-md">
-              We help you build scalable digital systems. Expect response within 2 hours.
+            
+            <p className="text-xl text-muted-foreground">
+              Fill out the form below and we'll get back to you within 2 hours
             </p>
-          </div>
-
-          <div className="space-y-5">
-            <ContactInfo icon={<Mail />} title="Email" detail="hello@arkynix.com" />
-            <ContactInfo icon={<Phone />} title="Mobile" detail="+91 88813 61999" />
-            <ContactInfo icon={<MapPin />} title="Location" detail="Innovation Hub, Tech City" />
-          </div>
+          </motion.div>
         </div>
+      </section>
 
-        {/* RIGHT SIDE FORM */}
-        <div className="bg-card border border-border rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden">
-          <AnimatePresence mode="wait">
-            {!isSuccess ? (
-              <motion.form
-                key="form"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-5"
-              >
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <InputGroup
-                    label="Full Name"
-                    error={errors.fullName?.message}
-                    {...register("fullName")}
-                  />
-                  <InputGroup
-                    label="Mobile Number"
-                    error={errors.mobile?.message}
-                    {...register("mobile")}
-                  />
-                </div>
+      {/* MAIN CONTENT */}
+      <section className="section-padding px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-12 items-start">
 
-                <InputGroup
-                  label="Email Address"
-                  type="email"
-                  error={errors.email?.message}
-                  {...register("email")}
-                />
-
-                {/* CUSTOM DROPDOWN */}
-                <ServiceDropdown
-                  setValue={setValue}
-                  error={errors.service?.message}
-                />
-
-                <TextareaGroup
-                  label="Project Brief (Optional)"
-                  {...register("message")}
-                />
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all active:scale-95 disabled:opacity-50 flex justify-center items-center gap-2"
-                >
-                  {isSubmitting ? "Initializing..." : "Execute Transmission"}
-                  <Send size={16} />
-                </button>
-              </motion.form>
-            ) : (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-12 space-y-4"
-              >
-                <CheckCircle size={40} className="mx-auto text-green-500" />
-                <h3 className="text-xl font-black uppercase">
-                  Handshake Verified
-                </h3>
-                <p className="text-sm text-foreground/60">
-                  Your inquiry has been logged successfully.
+            {/* LEFT SIDE - INFO */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-2 space-y-8"
+            >
+              <div>
+                <h2 className="text-3xl font-bold mb-4">
+                  Why Choose <span className="gradient-text">Arkynix</span>
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  We help you build scalable digital systems with cutting-edge technology 
+                  and proven methodologies. Expect a response within 2 hours.
                 </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+
+              <div className="space-y-4">
+                <ContactInfo 
+                  icon={<Mail className="w-5 h-5" />} 
+                  title="Email" 
+                  detail="hello@arkynix.com" 
+                  href="mailto:hello@arkynix.com"
+                />
+                <ContactInfo 
+                  icon={<Phone className="w-5 h-5" />} 
+                  title="Mobile" 
+                  detail="+91 88813 61999" 
+                  href="tel:+918881361999"
+                />
+                <ContactInfo 
+                  icon={<MapPin className="w-5 h-5" />} 
+                  title="Location" 
+                  detail="Innovation Hub, Tech City" 
+                />
+              </div>
+
+              {/* Features */}
+              <div className="pt-8 border-t border-border">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">
+                  What to Expect
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    "Response within 2 hours",
+                    "Free consultation call",
+                    "Custom project proposal",
+                    "Transparent pricing"
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                      <span className="text-sm text-foreground/80">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* RIGHT SIDE - FORM */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="lg:col-span-3"
+            >
+              <div className="premium-card relative overflow-hidden">
+                {/* Background decoration */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+                
+                <div className="relative z-10">
+                  <AnimatePresence mode="wait">
+                    {!isSuccess ? (
+                      <motion.form
+                        key="form"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-6"
+                      >
+                        {/* Name & Mobile */}
+                        <div className="grid sm:grid-cols-2 gap-6">
+                          <InputGroup
+                            label="Full Name"
+                            icon={<User className="w-4 h-4" />}
+                            placeholder="John Doe"
+                            error={errors.fullName?.message}
+                            {...register("fullName")}
+                          />
+                          <InputGroup
+                            label="Mobile Number"
+                            icon={<Phone className="w-4 h-4" />}
+                            placeholder="9876543210"
+                            error={errors.mobile?.message}
+                            {...register("mobile")}
+                          />
+                        </div>
+
+                        {/* Email */}
+                        <InputGroup
+                          label="Email Address"
+                          type="email"
+                          icon={<Mail className="w-4 h-4" />}
+                          placeholder="john@example.com"
+                          error={errors.email?.message}
+                          {...register("email")}
+                        />
+
+                        {/* Service Dropdown */}
+                        <ServiceDropdown
+                          setValue={setValue}
+                          error={errors.service?.message}
+                        />
+
+                        {/* Message */}
+                        <TextareaGroup
+                          label="Project Brief (Optional)"
+                          icon={<MessageSquare className="w-4 h-4" />}
+                          placeholder="Tell us about your project..."
+                          {...register("message")}
+                        />
+
+                        {/* Error Message */}
+                        {error && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center gap-2 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400"
+                          >
+                            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                            <span className="text-sm font-medium">{error}</span>
+                          </motion.div>
+                        )}
+
+                        {/* Submit Button */}
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="btn-primary w-full text-lg py-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              <span>Submitting...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>Submit Request</span>
+                              <Send className="w-5 h-5" />
+                            </>
+                          )}
+                        </button>
+
+                        <p className="text-xs text-center text-muted-foreground">
+                          By submitting, you agree to our Terms of Service and Privacy Policy
+                        </p>
+                      </motion.form>
+                    ) : (
+                      <motion.div
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="text-center py-16 space-y-6"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-green-500/10 border-2 border-green-500/20 flex items-center justify-center mx-auto">
+                          <CheckCircle className="w-10 h-10 text-green-500" />
+                        </div>
+                        <div>
+                          <h3 className="text-2xl font-black mb-2">
+                            Request Submitted!
+                          </h3>
+                          <p className="text-muted-foreground">
+                            Thank you for reaching out. We'll get back to you within 2 hours.
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <Sparkles className="w-4 h-4 text-accent" />
+                          <span>Check your email for confirmation</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* TRUST INDICATORS */}
+      <section className="py-16 px-6 bg-muted/30 border-y border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 text-center">
+            {[
+              { value: "2 Hours", label: "Response Time" },
+              { value: "50+", label: "Happy Clients" },
+              { value: "99.9%", label: "Success Rate" },
+              { value: "24/7", label: "Support" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="text-3xl md:text-4xl font-black gradient-text mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
 
@@ -222,43 +393,43 @@ function ServiceDropdown({ setValue, error }) {
 
   return (
     <div className="space-y-2 relative" ref={ref}>
-      <label className="text-[10px] font-bold uppercase tracking-widest opacity-50">
-        Operational Domain
+      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+        <Sparkles className="w-4 h-4 text-accent" />
+        Service Required
       </label>
 
       <div
         onClick={() => setOpen(!open)}
-        className={`w-full border rounded-xl p-4 text-sm flex justify-between items-center cursor-pointer ${
-          error ? "border-red-500" : "border-border"
+        className={`input-modern cursor-pointer flex justify-between items-center ${
+          error ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""
         }`}
       >
-        {selected || "Select Service"}
+        <span className={selected ? "text-foreground" : "text-muted-foreground"}>
+          {selected || "Select a service"}
+        </span>
         <ChevronDown
-          size={16}
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
+          className={`w-5 h-5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
         />
       </div>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -5 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            className="absolute w-full bg-background border border-border rounded-xl mt-2 max-h-60 overflow-y-auto shadow-lg z-50"
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute w-full bg-card border border-border rounded-xl mt-2 max-h-80 overflow-y-auto shadow-xl z-50 scrollbar-thin"
           >
             {services.map((group, idx) => (
               <div key={idx} className="p-3">
-                <p className="text-xs font-bold opacity-50 uppercase mb-2">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 px-2">
                   {group.category}
                 </p>
                 {group.options.map((option) => (
                   <div
                     key={option.value}
-                    onClick={() =>
-                      handleSelect(option.value, option.label)
-                    }
-                    className="p-2 rounded-lg text-sm hover:bg-red-600 hover:text-white cursor-pointer transition-all"
+                    onClick={() => handleSelect(option.value, option.label)}
+                    className="p-3 rounded-lg text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer transition-all font-medium"
                   >
                     {option.label}
                   </div>
@@ -270,7 +441,8 @@ function ServiceDropdown({ setValue, error }) {
       </AnimatePresence>
 
       {error && (
-        <p className="text-[10px] text-red-500 font-bold uppercase">
+        <p className="text-xs text-red-500 font-medium flex items-center gap-1">
+          <AlertCircle className="w-3 h-3" />
           {error}
         </p>
       )}
@@ -280,53 +452,67 @@ function ServiceDropdown({ setValue, error }) {
 
 /* ================= INPUT COMPONENTS ================= */
 
-const InputGroup = React.forwardRef(({ label, error, ...props }, ref) => (
+const InputGroup = React.forwardRef(({ label, icon, error, ...props }, ref) => (
   <div className="space-y-2">
-    <label className="text-[10px] font-bold uppercase tracking-widest opacity-50">
+    <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+      {icon && <span className="text-accent">{icon}</span>}
       {label}
     </label>
     <input
       ref={ref}
       {...props}
-      className={`w-full border rounded-xl p-4 text-sm outline-none ${
-        error ? "border-red-500" : "border-border focus:border-red-600"
+      className={`input-modern ${
+        error ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""
       }`}
     />
     {error && (
-      <p className="text-[10px] text-red-500 font-bold uppercase">
+      <p className="text-xs text-red-500 font-medium flex items-center gap-1">
+        <AlertCircle className="w-3 h-3" />
         {error}
       </p>
     )}
   </div>
 ));
 
-function TextareaGroup({ label, ...props }) {
-  return (
-    <div className="space-y-2">
-      <label className="text-[10px] font-bold uppercase tracking-widest opacity-50">
-        {label}
-      </label>
-      <textarea
-        rows={3}
-        {...props}
-        className="w-full border border-border rounded-xl p-4 text-sm outline-none focus:border-red-600 resize-none"
-      />
-    </div>
-  );
-}
+InputGroup.displayName = "InputGroup";
 
-function ContactInfo({ icon, title, detail }) {
-  return (
-    <div className="flex items-center gap-4">
-      <div className="w-11 h-11 rounded-xl bg-red-600/10 text-red-600 flex items-center justify-center">
-        {React.cloneElement(icon, { size: 18 })}
+const TextareaGroup = React.forwardRef(({ label, icon, ...props }, ref) => (
+  <div className="space-y-2">
+    <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+      {icon && <span className="text-accent">{icon}</span>}
+      {label}
+    </label>
+    <textarea
+      ref={ref}
+      rows={4}
+      {...props}
+      className="input-modern resize-none"
+    />
+  </div>
+));
+
+TextareaGroup.displayName = "TextareaGroup";
+
+function ContactInfo({ icon, title, detail, href }) {
+  const content = (
+    <div className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border hover:border-accent/30 transition-all group">
+      <div className="w-12 h-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center group-hover:scale-110 transition-transform">
+        {icon}
       </div>
       <div>
-        <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
+        <p className="text-xs uppercase tracking-wider text-muted-foreground font-bold mb-1">
           {title}
         </p>
-        <p className="font-semibold">{detail}</p>
+        <p className="font-semibold text-foreground">{detail}</p>
       </div>
     </div>
+  );
+
+  return href ? (
+    <a href={href} className="block">
+      {content}
+    </a>
+  ) : (
+    content
   );
 }
