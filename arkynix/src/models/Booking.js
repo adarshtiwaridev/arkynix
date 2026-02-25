@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const ContactSchema = new mongoose.Schema(
   {
+    /* ================= BASIC INFO ================= */
+
     name: {
       type: String,
       required: true,
@@ -15,60 +17,59 @@ const ContactSchema = new mongoose.Schema(
       required: true,
       lowercase: true,
       trim: true,
+      match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
+      index: true,
     },
 
     phone: {
       type: String,
+      required: true,
       trim: true,
-      default: "",
+      match: [/^[0-9]{10}$/, "Invalid phone number"],
     },
+
+    /* ================= SERVICE ================= */
 
     service: {
       type: String,
       required: true,
       enum: [
-        // Creative & Media
-        "ad-shoot",
-        "photo-shoot",
-        "videography",
-        "video-production",
+        // AI Solutions
+        "ai-agent",
+        "chat-agent",
+        "voice-agent",
 
-        // Digital Presence
-        "branding",
-        "social-media",
-        "marketing",
-        "website-design",
+        // Web Development
+        "portfolio",
+        "business",
+        "ecommerce",
 
-        // App & Web Development
-        "web-dev",
-        "app-dev",
-        "ui-ux",
-        "custom-software",
+        // App Development
+        "android",
+        "ios",
+        "cross",
+
+        // Software Architecture
+        "system-design",
+        "cloud",
+        "devops",
       ],
     },
 
-    budget: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-
-    location: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+    /* ================= MESSAGE ================= */
 
     message: {
       type: String,
-      required: true,
-      minlength: 10,
+      trim: true,
       maxlength: 2000,
+      default: "",
     },
+
+    /* ================= ADMIN CONTROL ================= */
 
     status: {
       type: String,
-      enum: ["new", "in-progress", "closed", "archived"],
+      enum: ["new", "in-progress", "closed"],
       default: "new",
     },
 
@@ -76,9 +77,24 @@ const ContactSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    source: {
+      type: String,
+      default: "website",
+    },
+
+    ipAddress: {
+      type: String,
+      default: "",
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
+
+/* ================= SAFE MODEL EXPORT ================= */
 
 export default mongoose.models.Contact ||
   mongoose.model("Contact", ContactSchema);
+  
