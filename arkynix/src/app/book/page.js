@@ -116,7 +116,7 @@ export default function BookingPage() {
     <main className="min-h-screen bg-background text-foreground">
       
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-16 px-6 border-b border-border">
+      {/* <section className="relative pt-32 pb-16 px-6 border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto relative z-10">
@@ -141,7 +141,7 @@ export default function BookingPage() {
             </p>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* MAIN CONTENT */}
       <section className="section-padding px-6">
@@ -174,8 +174,8 @@ export default function BookingPage() {
                 <ContactInfo 
                   icon={<Phone className="w-5 h-5" />} 
                   title="Mobile" 
-                  detail="+91 88813 61999" 
-                  href="tel:+918881361999"
+                  detail="+91 82356222283" 
+                  href="tel:+9182356222283"
                 />
                 <ContactInfo 
                   icon={<MapPin className="w-5 h-5" />} 

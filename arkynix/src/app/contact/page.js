@@ -52,7 +52,7 @@ const ContactPage = () => {
 
               <div className="space-y-4">
                 <a
-                  href="https://wa.me/918881361999"
+                  href="https://wa.me/94733672794"
                   className="flex items-center justify-between bg-red-600 hover:bg-red-700 text-white p-6 rounded-2xl font-bold transition-all group/btn shadow-xl shadow-red-600/10"
                 >
                   <span className="flex items-center gap-3">
@@ -62,7 +62,7 @@ const ContactPage = () => {
                 </a>
                 
                 <a
-                  href="tel:+918881361999"
+                  href="tel:9473662794"
                   className="flex items-center justify-center gap-3 bg-foreground text-background dark:bg-white dark:text-black p-6 rounded-2xl font-bold transition-all hover:opacity-90"
                 >
                   <Phone size={20} /> Request a Call

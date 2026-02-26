@@ -53,8 +53,8 @@ export default function Home() {
 
   const stats = [
     { value: "99.9%", label: "Uptime" },
-    { value: "500+", label: "Projects" },
-    { value: "50+", label: "Clients" },
+    { value: "5+", label: "Projects" },
+    { value: "5+", label: "Clients" },
     { value: "24/7", label: "Support" }
   ];
 
